@@ -22,23 +22,17 @@ const Home = () => {
   );
 
   console.log("searchResult::", searchResult);
-  console.log("searchText::", searchText);
+  //   console.log("searchText::", searchText);
 
   return (
-    <section class="bg-light pt-5 pb-5 shadow-sm">
-      <div class="container">
+    <section className=" bg-light pt-5 pb-5 shadow-sm">
+      <div className="container">
         <div>
           <p>Search</p>
           <div>
-            {/* <input
-              type="text"
-              placeholder="Enter Rocket Name..."
-              onChange={(e) => setSearchText(e.target.value)}
-              value={searchText}
-            /> */}
-
-            <InputGroup className="mb-3" size="lg">
+            <InputGroup className="mb-3 " size="lg">
               <FormControl
+                className="display-6"
                 placeholder="Enter Rocket Name..."
                 aria-label="Enter Rocket Name..."
                 aria-describedby="basic-addon1"
@@ -48,14 +42,14 @@ const Home = () => {
             </InputGroup>
           </div>
         </div>
-        <div class="row pt-5">
-          <div class="col-12">
-            <h3 class="text-uppercase border-bottom mb-4">Launches</h3>
+        <div className="row pt-5">
+          <div className="col-12">
+            <h3 className="text-uppercase border-bottom mb-4">Launches</h3>
           </div>
         </div>
-        <div class="row">
-          {searchResult.map((launch) => (
-            <LaunchesCard launch={launch} />
+        <div className="row">
+          {searchResult.map((launch, index) => (
+            <LaunchesCard key={index} launch={launch} />
           ))}
         </div>
       </div>
