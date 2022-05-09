@@ -2,21 +2,22 @@ import moment from "moment";
 import React from "react";
 
 const LaunchesCard = ({ launch }) => {
-  function nextweek() {
-    var today = new Date();
-    // var today = moment(launch.launch_date_local).format();
-    // var nextweek = new Date(
-    //   today.moment().year() - 3,
-    //   today.getMonth(),
-    //   today.getDate()
-    // );
-    var nextweek = today.getFullYear() - 1;
-    return nextweek;
-  }
-  var today = moment(launch.launch_date_local).format();
-  console.log(nextweek() < moment(launch.launch_date_local).year());
-  console.log(nextweek(), "::::", moment(launch.launch_date_local).format());
-  console.log(today);
+  // function filterDate() {
+  //   var today = new Date();
+  //   var filterDate = new Date(
+  //     today.getFullYear() - 3,
+  //     today.getMonth(),
+  //     today.getDate()
+  //   );
+  //   return filterDate;
+  // }
+  // var today = moment(launch.launch_date_local).format();
+  // console.log(filterDate() < moment(launch.launch_date_local).year());
+  // console.log(filterDate(), "::::", moment(launch.launch_date_local).format());
+  // console.log(today);
+  // console.log("filterDate::", filterDate());
+  // console.log("launchdate::", new Date(launch.launch_date_local));
+  // console.log(filterDate() < new Date(launch.launch_date_local));
 
   return (
     <div className="col-lg-4 mb-3 d-flex align-items-stretch">
@@ -28,17 +29,13 @@ const LaunchesCard = ({ launch }) => {
         />
         <div className="card-body d-flex flex-column">
           <h5 className="card-title">{launch.mission_name}</h5>
-          {nextweek() < moment(launch.launch_date_local).format() && (
-            <p className="card-text mb-4">
-              {moment(launch.launch_date_local, "YYYYMMDD").fromNow()} on{" "}
-              {moment(launch.launch_date_local).format(
-                "MMMM Do YYYY, h:mm:ss a"
-              )}
-            </p>
-          )}
           <p className="card-text mb-4">
-            {moment(launch.launch_date_local).subtract(6, "days").calendar()}
+            {moment(launch.launch_date_local, "YYYYMMDD").fromNow()} on{" "}
+            {moment(launch.launch_date_local).format("MMMM Do YYYY, h:mm:ss a")}
           </p>
+          {/* <p className="card-text mb-4">
+            {moment(launch.launch_date_local).subtract(6, "days").calendar()}
+          </p> */}
           <p className="card-text mb-4">{launch.details}</p>
 
           <a
