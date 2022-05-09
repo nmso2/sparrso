@@ -28,27 +28,29 @@ const LaunchesCard = ({ launch }) => {
           <p>
             <FontAwesomeIcon icon={faRocket} /> {launch.rocket.rocket_name}
           </p>
-          {/* <p className="card-text mb-4">
-            {moment(launch.launch_date_local).subtract(6, "days").calendar()}
-          </p> */}
-          {/* <p className="card-text mb-4">{launch.details}</p> */}
 
           <div className=" d-flex text-center align-content-center justify-content-around">
             <a
               href={launch.links.article_link}
               className="btn btn-outline-dark mt-auto"
+              target="_blank"
+              rel="noreferrer"
             >
               Details
             </a>
             <a
               href={launch.links.video_link}
               className="btn btn-outline-dark mt-auto"
+              target="_blank"
+              rel="noreferrer"
             >
               Video
             </a>
             <a
               href={launch.links.wikipedia}
               className="btn btn-outline-dark mt-auto"
+              target="_blank"
+              rel="noreferrer"
             >
               Wikipedia
             </a>

@@ -119,7 +119,7 @@ const Home = () => {
           <div className="d-md-flex justify-content-center">
             <input
               type="text"
-              className="form-control-sm border-1"
+              className="form-control-sm border-1 mt-1"
               placeholder="Search by Rocket Name..."
               aria-label="Search by Rocket Name..."
               onChange={(e) => setSearchText(e.target.value)}
@@ -128,7 +128,7 @@ const Home = () => {
 
             <DropdownButton
               variant="outline-dark"
-              className="ms-3"
+              className="ms-3 mt-1"
               id="dropdown-item-button"
               title="Launch Date"
             >
@@ -169,7 +169,7 @@ const Home = () => {
 
             <DropdownButton
               variant="outline-dark"
-              className="ms-3"
+              className="ms-3 mt-1"
               id="dropdown-item-button"
               title="Launch Status"
             >
@@ -199,7 +199,7 @@ const Home = () => {
 
             <DropdownButton
               variant="outline-dark"
-              className="ms-3"
+              className="ms-3 mt-1"
               id="dropdown-item-button"
               title="Upcoming?"
             >
@@ -218,7 +218,7 @@ const Home = () => {
             <Button
               variant="outline-danger"
               onClick={clearFilter}
-              className="ms-3"
+              className="ms-3 mt-1"
             >
               Clear Filter
             </Button>
