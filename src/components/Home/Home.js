@@ -16,6 +16,10 @@ const Home = () => {
   const [displayData, setDisplayData] = useState([]);
   const [filterState, setFilterState] = useState(true);
   const [monthSelected, setMonthSelected] = useState(false);
+  const [yearSelected, setYearSelected] = useState(false);
+  const [weekSelected, setWeekSelected] = useState(false);
+  const [upcommingSelected, setUpcommingSelected] = useState(false);
+  const [isSuccess, setIsSuccess] = useState("");
 
   const launches = useSelector((state) => state.launches.launches);
   const dispatch = useDispatch();
@@ -24,50 +28,36 @@ const Home = () => {
     dispatch(fetchLaunches());
   }, [dispatch]);
 
-  //   console.log(launches);
   var today = new Date();
-  // function filterDate() {
-  //   var today = new Date();
-  //   var filterDate = new Date(
-  //     today.getFullYear() - 1900,
-  //     today.getMonth(),
-  //     today.getDate()
-  //   );
-  //   return filterDate;
-  // }
-
   var y = new Date(new Date().getFullYear() - 1, 0, 1);
   var m = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-  var d = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
+  var w = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
 
   var d1 = new Date(); // current date
   d1.setDate(0); // going to 1st of the month
-  console.log(new Date(y.getFullYear(), 11, 31), ":::", y); //last day of previous year
-  console.log(d1, ":::", m); //last day of previous month
-  console.log(
-    d,
-    ":::",
-    new Date(today.getFullYear(), today.getMonth(), today.getDate() - 14)
-  ); // last week
 
-  // console.log(filterDate());
-  // console.log(y);
-  // console.log(m);
-  // console.log(d);
-  console.log(
-    "Test::: ",
-    m < new Date("Sun Apr 03 2022 00:00:00 GMT+0600") &&
-      new Date("Sun Apr 03 2022 00:00:00 GMT+0600") < d1
-  );
-
-  // const searchResult = launches.filter(
-  //   (search) =>
-  //     search.rocket.rocket_name.toLowerCase().includes(searchText.toLowerCase())
-  //   // && filterDate() < new Date(search.launch_date_local)
-  // );
+  const clearFilter = () => {
+    setMonthSelected(false);
+    setYearSelected(false);
+    setWeekSelected(false);
+    setUpcommingSelected(false);
+    setIsSuccess("");
+  };
 
   useEffect(() => {
-    monthSelected
+    yearSelected
+      ? setDisplayData(
+          launches.filter(
+            (search) =>
+              search.rocket.rocket_name
+                .toLowerCase()
+                .includes(searchText.toLowerCase()) &&
+              y < new Date(search.launch_date_local) &&
+              new Date(search.launch_date_local) <
+                new Date(y.getFullYear(), 11, 31)
+          )
+        )
+      : monthSelected
       ? setDisplayData(
           launches.filter(
             (search) =>
@@ -78,6 +68,48 @@ const Home = () => {
               new Date(search.launch_date_local) < d1
           )
         )
+      : weekSelected
+      ? setDisplayData(
+          launches.filter(
+            (search) =>
+              search.rocket.rocket_name
+                .toLowerCase()
+                .includes(searchText.toLowerCase()) &&
+              new Date(
+                today.getFullYear(),
+                today.getMonth(),
+                today.getDate() - 14
+              ) < new Date(search.launch_date_local) &&
+              new Date(search.launch_date_local) < w
+          )
+        )
+      : upcommingSelected
+      ? setDisplayData(
+          launches.filter(
+            (search) =>
+              search.rocket.rocket_name
+                .toLowerCase()
+                .includes(searchText.toLowerCase()) && search.upcoming
+          )
+        )
+      : isSuccess === "success"
+      ? setDisplayData(
+          launches.filter(
+            (search) =>
+              search.rocket.rocket_name
+                .toLowerCase()
+                .includes(searchText.toLowerCase()) && search.launch_success
+          )
+        )
+      : isSuccess === "fail"
+      ? setDisplayData(
+          launches.filter(
+            (search) =>
+              search.rocket.rocket_name
+                .toLowerCase()
+                .includes(searchText.toLowerCase()) && !search.launch_success
+          )
+        )
       : setDisplayData(
           launches.filter((search) =>
             search.rocket.rocket_name
@@ -85,18 +117,18 @@ const Home = () => {
               .includes(searchText.toLowerCase())
           )
         );
-  }, [launches, monthSelected, searchText]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    launches,
+    monthSelected,
+    searchText,
+    yearSelected,
+    weekSelected,
+    upcommingSelected,
+    isSuccess,
+  ]);
 
   console.log("displayData::", displayData);
-  //   console.log("searchText::", searchText);
-
-  const filteredResult = () =>
-    displayData.filter(
-      (data) =>
-        m < new Date(data.launch_date_local) &&
-        new Date(data.launch_date_local) < d1
-    );
-  console.log(filteredResult());
 
   return (
     <section className=" bg-light pt-5 pb-5 shadow-sm">
@@ -127,8 +159,8 @@ const Home = () => {
                   type="checkbox"
                   name="week"
                   id="week"
-                  value={7}
-                  onChange={(e) => console.log(e.target.checked)}
+                  checked={weekSelected}
+                  onChange={(e) => setWeekSelected(e.target.checked)}
                 />
                 <label className="ms-1" htmlFor="week">
                   Last Week
@@ -139,6 +171,7 @@ const Home = () => {
                   type="checkbox"
                   name="month"
                   id="month"
+                  checked={monthSelected}
                   onChange={(e) => setMonthSelected(e.target.checked)}
                 />
                 <label className="ms-1" htmlFor="month">
@@ -146,13 +179,25 @@ const Home = () => {
                 </label>
               </div>
               <div className="ms-3 d-md-inline">
-                <input type="checkbox" name="year" id="year" />
+                <input
+                  type="checkbox"
+                  name="year"
+                  id="year"
+                  checked={yearSelected}
+                  onChange={(e) => setYearSelected(e.target.checked)}
+                />
                 <label className="ms-1" htmlFor="year">
                   Last Year
                 </label>
               </div>
               <div className="ms-3 d-md-inline">
-                <input type="checkbox" name="upcomming" id="upcomming" />
+                <input
+                  type="checkbox"
+                  name="upcomming"
+                  id="upcomming"
+                  checked={upcommingSelected}
+                  onChange={(e) => setUpcommingSelected(e.target.checked)}
+                />
                 <label className="ms-1" htmlFor="upcomming">
                   Upcomming
                 </label>
@@ -165,10 +210,24 @@ const Home = () => {
                 id="dropdown-item-button"
                 title="Launch Status"
               >
-                {/* <Dropdown.ItemText>Dropdown item text</Dropdown.ItemText> */}
-                <Dropdown.Item as="button">Failure</Dropdown.Item>
-                <Dropdown.Item as="button">Success</Dropdown.Item>
+                <Dropdown.Item
+                  as="button"
+                  value={"fail"}
+                  onClick={(e) => setIsSuccess(e.target.value)}
+                >
+                  Failure
+                </Dropdown.Item>
+                <Dropdown.Item
+                  as="button"
+                  value={"success"}
+                  onClick={(e) => setIsSuccess(e.target.value)}
+                >
+                  Success
+                </Dropdown.Item>
               </DropdownButton>
+              <Button onClick={clearFilter} className="ms-3 d-md-inline">
+                Clear Filter
+              </Button>
               {/* ================================================= */}
             </div>
           </div>
