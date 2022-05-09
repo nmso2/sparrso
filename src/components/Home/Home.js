@@ -225,7 +225,11 @@ const Home = () => {
                   Success
                 </Dropdown.Item>
               </DropdownButton>
-              <Button onClick={clearFilter} className="ms-3 d-md-inline">
+              <Button
+                variant="outline-danger"
+                onClick={clearFilter}
+                className="ms-3 d-md-inline"
+              >
                 Clear Filter
               </Button>
               {/* ================================================= */}
