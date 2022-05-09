@@ -2,7 +2,6 @@ import React from "react";
 import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLocationDot, faRocket } from "@fortawesome/free-solid-svg-icons";
-import { Button } from "react-bootstrap";
 
 const LaunchesCard = ({ launch }) => {
   return (
