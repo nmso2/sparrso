@@ -41,7 +41,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    upcomming === "upcomming"
+    upcomming === "Upcomming"
       ? setDisplayData(
           launches.filter(
             (search) =>
@@ -50,7 +50,7 @@ const Home = () => {
                 .includes(searchText.toLowerCase()) && search.upcoming
           )
         )
-      : isSuccess === "success"
+      : isSuccess === "Success"
       ? setDisplayData(
           launches.filter(
             (search) =>
@@ -59,7 +59,7 @@ const Home = () => {
                 .includes(searchText.toLowerCase()) && search.launch_success
           )
         )
-      : isSuccess === "fail"
+      : isSuccess === "Failure"
       ? setDisplayData(
           launches.filter(
             (search) =>
@@ -68,7 +68,7 @@ const Home = () => {
                 .includes(searchText.toLowerCase()) && !search.launch_success
           )
         )
-      : duration === "last_week"
+      : duration === "Last Week"
       ? setDisplayData(
           launches.filter(
             (search) =>
@@ -83,7 +83,7 @@ const Home = () => {
               new Date(search.launch_date_local) < w
           )
         )
-      : duration === "last_month"
+      : duration === "Last Month"
       ? setDisplayData(
           launches.filter(
             (search) =>
@@ -94,7 +94,7 @@ const Home = () => {
               new Date(search.launch_date_local) < d1
           )
         )
-      : duration === "last_year"
+      : duration === "Last Year"
       ? setDisplayData(
           launches.filter(
             (search) =>
@@ -133,9 +133,6 @@ const Home = () => {
               aria-label="Search by Rocket Name..."
               onChange={(e) => {
                 setSearchText(e.target.value);
-                setIsSuccess("");
-                setDuration("");
-                setUpcomming("");
                 setPage(0);
               }}
               value={searchText}
@@ -145,11 +142,11 @@ const Home = () => {
               variant="outline-dark"
               className="ms-3 mt-1"
               id="dropdown-item-button"
-              title="Launch Date"
+              title={duration ? duration : "Launch Date"}
             >
               <Dropdown.Item
                 as="button"
-                value={"last_week"}
+                value={"Last Week"}
                 onClick={(e) => {
                   setIsSuccess("");
                   setUpcomming("");
@@ -161,7 +158,7 @@ const Home = () => {
               </Dropdown.Item>
               <Dropdown.Item
                 as="button"
-                value={"last_month"}
+                value={"Last Month"}
                 onClick={(e) => {
                   setIsSuccess("");
                   setUpcomming("");
@@ -173,7 +170,7 @@ const Home = () => {
               </Dropdown.Item>
               <Dropdown.Item
                 as="button"
-                value={"last_year"}
+                value={"Last Year"}
                 onClick={(e) => {
                   setIsSuccess("");
                   setUpcomming("");
@@ -189,11 +186,11 @@ const Home = () => {
               variant="outline-dark"
               className="ms-3 mt-1"
               id="dropdown-item-button"
-              title="Launch Status"
+              title={isSuccess ? isSuccess : "Launch Status"}
             >
               <Dropdown.Item
                 as="button"
-                value={"fail"}
+                value={"Failure"}
                 onClick={(e) => {
                   setDuration("");
                   setUpcomming("");
@@ -205,7 +202,7 @@ const Home = () => {
               </Dropdown.Item>
               <Dropdown.Item
                 as="button"
-                value={"success"}
+                value={"Success"}
                 onClick={(e) => {
                   setDuration("");
                   setUpcomming("");
@@ -221,11 +218,11 @@ const Home = () => {
               variant="outline-dark"
               className="ms-3 mt-1"
               id="dropdown-item-button"
-              title="Upcoming?"
+              title={upcomming ? upcomming : "Upcoming?"}
             >
               <Dropdown.Item
                 as="button"
-                value={"upcomming"}
+                value={"Upcomming"}
                 onClick={(e) => {
                   setDuration("");
                   setIsSuccess("");
@@ -251,11 +248,19 @@ const Home = () => {
             <h3 className="text-uppercase border-bottom pb-2 mb-4">Launches</h3>
           </div>
         </div>
-        <div className="row">
-          {displayData.slice(page * 12, page * 12 + 12).map((launch, index) => (
-            <LaunchesCard key={index} launch={launch} />
-          ))}
-        </div>
+        {displayData.length ? (
+          <div className="row">
+            {displayData
+              .slice(page * 12, page * 12 + 12)
+              .map((launch, index) => (
+                <LaunchesCard key={index} launch={launch} />
+              ))}
+          </div>
+        ) : !launches.length ? (
+          <p> Please Wait...</p>
+        ) : (
+          <p>No Result Found!</p>
+        )}
       </div>
       <Pagination className="justify-content-center mt-md-5">
         {[...Array(pageCount).keys()].map((number) => (
