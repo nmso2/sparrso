@@ -113,7 +113,7 @@ const Home = () => {
   console.log("displayData::", displayData);
 
   return (
-    <section className=" bg-light pt-5 pb-5 shadow-sm">
+    <section className=" bg-light pt-5 pb-5 mt-5 shadow-sm">
       <div className="container">
         <div>
           <div className="d-md-flex justify-content-center">
