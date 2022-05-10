@@ -1,6 +1,6 @@
 # SPARRSO
 
-- Live: https://technext-nmso2.netlify.app/
+- Live: https://sparrso-nmso2.netlify.app/
 
 - This project is developed by [Md. Nagib Mahfuz Subho](https://nagibmahfuzsubho.netlify.app/).
 
