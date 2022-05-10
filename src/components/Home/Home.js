@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchLaunches } from "../../redux/slices/launchesSlice";
 import LaunchesCard from "../LaunchesCard/LaunchesCard";
-import { Button, Dropdown, DropdownButton } from "react-bootstrap";
+import { Button, Dropdown, DropdownButton, Pagination } from "react-bootstrap";
 
 const Home = () => {
   const [searchText, setSearchText] = useState("");
@@ -11,6 +11,11 @@ const Home = () => {
   const [isSuccess, setIsSuccess] = useState("");
   const [duration, setDuration] = useState("");
   const [upcomming, setUpcomming] = useState("");
+  const [pageCount, setPageCount] = useState(0);
+  const [page, setPage] = useState(0);
+  const pageNumber = Math.ceil(displayData.length / 12);
+
+  console.log("page number::", page);
 
   const launches = useSelector((state) => state.launches.launches);
   const dispatch = useDispatch();
@@ -32,6 +37,7 @@ const Home = () => {
     setDuration("");
     setUpcomming("");
     setSearchText("");
+    setPage(0);
   };
 
   useEffect(() => {
@@ -107,13 +113,16 @@ const Home = () => {
               .includes(searchText.toLowerCase())
           )
         );
+
+    setPageCount(pageNumber);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [launches, searchText, isSuccess, duration, upcomming]);
+  }, [launches, searchText, isSuccess, duration, upcomming, pageNumber]);
 
   console.log("displayData::", displayData);
 
   return (
-    <section className=" bg-light pt-5 pb-5 mt-5 shadow-sm">
+    <section className="bg-light pt-5 pb-5 mt-5 shadow-sm">
       <div className="container">
         <div>
           <div className="d-md-flex justify-content-center">
@@ -122,7 +131,13 @@ const Home = () => {
               className="form-control-sm border-1 mt-1"
               placeholder="Search by Rocket Name..."
               aria-label="Search by Rocket Name..."
-              onChange={(e) => setSearchText(e.target.value)}
+              onChange={(e) => {
+                setSearchText(e.target.value);
+                setIsSuccess("");
+                setDuration("");
+                setUpcomming("");
+                setPage(0);
+              }}
               value={searchText}
             />
 
@@ -139,6 +154,7 @@ const Home = () => {
                   setIsSuccess("");
                   setUpcomming("");
                   setDuration(e.target.value);
+                  setPage(0);
                 }}
               >
                 Last Week
@@ -150,6 +166,7 @@ const Home = () => {
                   setIsSuccess("");
                   setUpcomming("");
                   setDuration(e.target.value);
+                  setPage(0);
                 }}
               >
                 Last Month
@@ -161,6 +178,7 @@ const Home = () => {
                   setIsSuccess("");
                   setUpcomming("");
                   setDuration(e.target.value);
+                  setPage(0);
                 }}
               >
                 Last Year
@@ -180,6 +198,7 @@ const Home = () => {
                   setDuration("");
                   setUpcomming("");
                   setIsSuccess(e.target.value);
+                  setPage(0);
                 }}
               >
                 Failure
@@ -191,6 +210,7 @@ const Home = () => {
                   setDuration("");
                   setUpcomming("");
                   setIsSuccess(e.target.value);
+                  setPage(0);
                 }}
               >
                 Success
@@ -210,6 +230,7 @@ const Home = () => {
                   setDuration("");
                   setIsSuccess("");
                   setUpcomming(e.target.value);
+                  setPage(0);
                 }}
               >
                 Upcomming
@@ -231,11 +252,18 @@ const Home = () => {
           </div>
         </div>
         <div className="row">
-          {displayData.map((launch, index) => (
+          {displayData.slice(page * 12, page * 12 + 12).map((launch, index) => (
             <LaunchesCard key={index} launch={launch} />
           ))}
         </div>
       </div>
+      <Pagination className="justify-content-center mt-md-5">
+        {[...Array(pageCount).keys()].map((number) => (
+          <Pagination.Item key={number} onClick={() => setPage(number)}>
+            {number + 1}
+          </Pagination.Item>
+        ))}
+      </Pagination>
     </section>
   );
 };

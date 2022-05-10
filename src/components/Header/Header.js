@@ -4,7 +4,7 @@ import logo from "../../media/Sparrso_logo.jpg";
 
 const Header = () => {
   return (
-    <Navbar bg="light" variant="light" fixed="top" className=" shadow-lg">
+    <Navbar bg="light" variant="light" fixed="top" className="shadow-lg">
       <Container>
         <Navbar.Brand href="#home">
           <img
